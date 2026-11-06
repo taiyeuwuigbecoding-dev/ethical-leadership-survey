@@ -1,0 +1,449 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ethical Leadership Exercise</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one centred column. Three scenario blocks stack with a progress count; the result replaces them with a full-width animated stage and a short debrief. */
+:root {
+  --bg: #F2F4F1;
+  --surface: #FFFFFF;
+  --fg: #16201D;
+  --muted: #55635E;
+  --line: #D5DCD8;
+  --accent: #1D6B58;
+  --accent-fg: #FFFFFF;
+  --good: #1D6B58;
+  --bad: #A3202F;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Instrument Sans', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1513; --surface: #18201D; --fg: #E8EEEB; --muted: #9AA8A2; --line: #2B3631;
+    --accent: #4FC3A1; --accent-fg: #0B1713; --good: #4FC3A1; --bad: #FF6B7A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1513; --surface: #18201D; --fg: #E8EEEB; --muted: #9AA8A2; --line: #2B3631;
+  --accent: #4FC3A1; --accent-fg: #0B1713; --good: #4FC3A1; --bad: #FF6B7A;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+main { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.1; }
+p { margin: 0; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+header { display: flex; flex-direction: column; gap: 10px; }
+h1 { font-size: clamp(30px, 7vw, 44px); font-weight: 800; letter-spacing: -.02em; }
+.lede { color: var(--muted); max-width: 56ch; }
+
+.progress { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bar { flex: 1; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.bar > span { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+
+#scenarios { display: flex; flex-direction: column; gap: 16px; }
+.scenario { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.scenario h2 { font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
+.scenario .tag { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.scenario p { max-width: 62ch; }
+.scenario .ask { font-weight: 600; }
+select {
+  width: 100%; min-width: 0; font: inherit; color: var(--fg); background: var(--bg);
+  border: 1.5px solid var(--line); border-radius: 8px; padding: 12px 12px;
+}
+select:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+select:invalid { color: var(--muted); }
+select option { color: var(--fg); }
+
+.actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+button { font: inherit; font-weight: 600; cursor: pointer; border-radius: 8px; padding: 13px 22px; border: 1.5px solid var(--accent); background: var(--accent); color: var(--accent-fg); }
+button:disabled { cursor: not-allowed; background: transparent; color: var(--muted); border-color: var(--line); }
+button.ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+.hint { font-size: 14px; color: var(--muted); }
+
+/* Result */
+#result { display: flex; flex-direction: column; gap: 20px; }
+.stage { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 16 / 11; max-height: 440px; width: 100%; display: grid; place-items: center; }
+.stage.good { background: linear-gradient(180deg, #BFE6F5 0%, #FFF3C9 100%); }
+.stage.bad { background: linear-gradient(180deg, #0E0612 0%, #3A0A14 100%); }
+.stage svg { height: 100%; width: auto; max-width: 100%; display: block; }
+.verdict h2 { font-size: clamp(28px, 6vw, 40px); font-weight: 800; letter-spacing: -.02em; }
+.verdict.good h2 { color: var(--good); }
+.verdict.bad h2 { color: var(--bad); }
+.verdict p { margin-top: 8px; color: var(--muted); max-width: 58ch; }
+.score { font-weight: 600; color: var(--fg); }
+
+.debrief { display: flex; flex-direction: column; gap: 12px; }
+.debrief h3 { font-size: 20px; font-weight: 700; }
+.row { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
+.row .q { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.row .a { font-weight: 600; }
+.chip { align-self: flex-start; font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; border: 1.5px solid currentColor; }
+.chip.good { color: var(--good); }
+.chip.bad { color: var(--bad); }
+.row .why { color: var(--muted); font-size: 15px; }
+.discuss { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; color: var(--muted); }
+
+/* Figure animation */
+.fig .rays { transform-origin: 160px 130px; animation: spin 40s linear infinite; }
+.fig .glow { transform-origin: 160px 130px; animation: pulse 3.2s ease-in-out infinite; }
+.fig .person { animation: rise .9s cubic-bezier(.2,.8,.2,1) both, bob 3.6s ease-in-out .9s infinite; }
+.fig .halo { transform-origin: 160px 62px; animation: halo 2.6s ease-in-out infinite; }
+.fig .sparkle { transform-box: fill-box; transform-origin: center; animation: twinkle 2.2s ease-in-out infinite; }
+.fig .sparkle:nth-of-type(2n) { animation-delay: .7s; }
+.fig .sparkle:nth-of-type(3n) { animation-delay: 1.3s; }
+.fig .flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker .9s ease-in-out infinite alternate; }
+.fig .flame:nth-of-type(2n) { animation-duration: .7s; animation-delay: .15s; }
+.fig .flame:nth-of-type(3n) { animation-duration: 1.1s; animation-delay: .3s; }
+.fig .eye { animation: eyeglow 1.6s ease-in-out infinite; }
+.fig .fireball { transform-box: fill-box; transform-origin: center; animation: pulse 1s ease-in-out infinite; }
+.fig .flash { animation: flash 5s linear infinite; }
+.fig .bat { transform-box: fill-box; transform-origin: center; animation: flap .35s ease-in-out infinite alternate, drift 6s ease-in-out infinite alternate; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { transform: scale(.94); opacity: .85; } 50% { transform: scale(1.06); opacity: 1; } }
+@keyframes rise { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes halo { 0%, 100% { transform: translateY(0) scaleX(1); } 50% { transform: translateY(-4px) scaleX(1.08); } }
+@keyframes twinkle { 0%, 100% { transform: scale(.3); opacity: .2; } 50% { transform: scale(1); opacity: 1; } }
+@keyframes flicker { from { transform: scaleY(.8) scaleX(1.05); } to { transform: scaleY(1.15) scaleX(.9); } }
+@keyframes eyeglow { 0%, 100% { opacity: .75; } 50% { opacity: 1; } }
+@keyframes flash { 0%, 90%, 100% { opacity: 0; } 92% { opacity: .55; } 94% { opacity: 0; } 96% { opacity: .35; } }
+@keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(.35); } }
+@keyframes drift { from { transform: translate(0, 0); } to { transform: translate(26px, -14px); } }
+@media (prefers-reduced-motion: reduce) {
+  .fig *, .bar > span { animation: none !important; transition: none !important; }
+}
+</style>
+
+<main>
+  <header>
+    <p class="eyebrow">Class exercise · Ethical leadership</p>
+    <h1>What kind of leader are you?</h1>
+    <p class="lede">Read each situation and pick what you would really do, not what sounds best. Your three choices decide which leader shows up at the end.</p>
+  </header>
+
+  <form id="quiz" novalidate>
+    <div class="progress" aria-live="polite">
+      <span id="count">0 of 3 answered</span>
+      <div class="bar" aria-hidden="true"><span id="barfill"></span></div>
+    </div>
+    <div id="scenarios" style="margin-top:16px"></div>
+    <div class="actions" style="margin-top:20px">
+      <button type="submit" id="go" disabled>Reveal my leadership style</button>
+      <span class="hint" id="hint">Answer all three to see your result.</span>
+      <p id="submit-error" role="alert" style="color:var(--bad);width:100%" hidden></p>
+    </div>
+  </form>
+
+  <section id="result" hidden aria-live="polite">
+    <div class="stage good" id="stage-good" hidden>
+      <svg class="fig" viewBox="0 0 320 300" role="img" aria-label="An animated ethical leader with a glowing halo, open arms and a heart on their chest, surrounded by sparkles">
+        <defs>
+          <radialGradient id="gGlow"><stop offset="0" stop-color="#FFF1B8" stop-opacity=".95"/><stop offset="1" stop-color="#FFF1B8" stop-opacity="0"/></radialGradient>
+        </defs>
+        <g class="rays" stroke="#FFE38A" stroke-width="6" stroke-linecap="round" opacity=".55">
+          <line x1="160" y1="130" x2="160" y2="-10"/><line x1="160" y1="130" x2="260" y2="30"/><line x1="160" y1="130" x2="300" y2="130"/>
+          <line x1="160" y1="130" x2="260" y2="230"/><line x1="160" y1="130" x2="160" y2="270"/><line x1="160" y1="130" x2="60" y2="230"/>
+          <line x1="160" y1="130" x2="20" y2="130"/><line x1="160" y1="130" x2="60" y2="30"/>
+        </g>
+        <circle class="glow" cx="160" cy="130" r="125" fill="url(#gGlow)"/>
+        <ellipse cx="160" cy="288" rx="90" ry="9" fill="#2F7F6B" opacity=".25"/>
+        <g class="person">
+          <path d="M122 168 Q92 182 82 214" stroke="#2F7F6B" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <path d="M198 168 Q228 182 238 214" stroke="#2F7F6B" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <circle cx="80" cy="218" r="11" fill="#F2C9A5"/><circle cx="240" cy="218" r="11" fill="#F2C9A5"/>
+          <path d="M116 284 L116 176 Q116 138 160 138 Q204 138 204 176 L204 284 Z" fill="#2F7F6B"/>
+          <path d="M160 196 C160 184 143 182 143 195 C143 205 160 215 160 215 C160 215 177 205 177 195 C177 182 160 184 160 196 Z" fill="#FFD86B"/>
+          <rect x="148" y="122" width="24" height="20" rx="6" fill="#F2C9A5"/>
+          <circle cx="160" cy="96" r="28" fill="#F2C9A5"/>
+          <path d="M131 94 Q132 60 160 60 Q188 60 189 94 Q176 76 160 78 Q144 76 131 94 Z" fill="#3B2A20"/>
+          <circle cx="149" cy="100" r="3.2" fill="#2A1B14"/><circle cx="171" cy="100" r="3.2" fill="#2A1B14"/>
+          <path d="M148 111 Q160 124 172 111" stroke="#2A1B14" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+        </g>
+        <ellipse class="halo" cx="160" cy="46" rx="28" ry="7" fill="none" stroke="#F5B921" stroke-width="5"/>
+        <g fill="#FFFFFF">
+          <path class="sparkle" d="M50 70 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z"/>
+          <path class="sparkle" d="M262 58 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/>
+          <path class="sparkle" d="M276 170 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z"/>
+          <path class="sparkle" d="M36 190 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/>
+          <path class="sparkle" d="M210 22 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/>
+          <path class="sparkle" d="M104 24 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="stage bad" id="stage-bad" hidden>
+      <svg class="fig" viewBox="0 0 320 300" role="img" aria-label="An animated evil leader in a dark cloak with horns, glowing eyes and a fireball, with flames below and bats flying around">
+        <defs>
+          <radialGradient id="bGlow"><stop offset="0" stop-color="#FF2A3D" stop-opacity=".7"/><stop offset="1" stop-color="#FF2A3D" stop-opacity="0"/></radialGradient>
+          <radialGradient id="fireGrad"><stop offset="0" stop-color="#FFE27A"/><stop offset=".6" stop-color="#FF6A1A"/><stop offset="1" stop-color="#C41212"/></radialGradient>
+        </defs>
+        <circle class="glow" cx="160" cy="140" r="135" fill="url(#bGlow)"/>
+        <rect class="flash" x="0" y="0" width="320" height="300" fill="#FFFFFF"/>
+        <g class="flames">
+          <path class="flame" d="M30 300 C10 270 24 250 30 226 C38 250 52 270 30 300Z" fill="#FF6A1A"/>
+          <path class="flame" d="M80 300 C56 262 74 244 80 214 C90 244 104 262 80 300Z" fill="#E8261A"/>
+          <path class="flame" d="M240 300 C216 262 234 244 240 214 C250 244 264 262 240 300Z" fill="#E8261A"/>
+          <path class="flame" d="M290 300 C270 270 284 250 290 226 C298 250 312 270 290 300Z" fill="#FF6A1A"/>
+          <path class="flame" d="M130 300 C110 272 124 256 130 236 C138 256 150 272 130 300Z" fill="#FF9B2E"/>
+          <path class="flame" d="M190 300 C170 272 184 256 190 236 C198 256 210 272 190 300Z" fill="#FF9B2E"/>
+        </g>
+        <g class="person">
+          <path d="M206 170 Q236 150 248 112" stroke="#1A0F1F" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <path d="M114 172 Q90 190 84 226" stroke="#1A0F1F" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <g stroke="#1A0F1F" stroke-width="4" stroke-linecap="round">
+            <line x1="240" y1="104" x2="232" y2="92"/><line x1="250" y1="102" x2="250" y2="88"/><line x1="258" y1="106" x2="266" y2="94"/>
+            <line x1="78" y1="234" x2="70" y2="246"/><line x1="86" y1="236" x2="84" y2="250"/><line x1="94" y1="232" x2="100" y2="244"/>
+          </g>
+          <circle class="fireball" cx="250" cy="76" r="20" fill="url(#fireGrad)"/>
+          <path d="M96 290 L128 156 Q160 130 192 156 L224 290 Z" fill="#1A0F1F"/>
+          <path d="M160 150 L138 290 L182 290 Z" fill="#2B1230"/>
+          <path d="M136 80 Q122 52 108 44 Q132 54 152 72 Z" fill="#8E1B2B"/>
+          <path d="M184 80 Q198 52 212 44 Q188 54 168 72 Z" fill="#8E1B2B"/>
+          <path d="M130 108 Q128 62 160 62 Q192 62 190 108 Q176 90 160 90 Q144 90 130 108 Z" fill="#1A0F1F"/>
+          <ellipse cx="160" cy="102" rx="25" ry="28" fill="#2A1830"/>
+          <path class="eye" d="M139 96 L154 102 L141 106 Z" fill="#FFD23A"/>
+          <path class="eye" d="M181 96 L166 102 L179 106 Z" fill="#FFD23A"/>
+          <path d="M145 117 L150 123 L155 117 L160 123 L165 117 L170 123 L175 117" stroke="#F3E9E0" stroke-width="3" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+        </g>
+        <g fill="#0A0510">
+          <path class="bat" d="M40 60 q10 -14 20 0 q10 -14 20 0 q-10 4 -20 14 q-10 -10 -20 -14z"/>
+          <path class="bat" d="M230 36 q8 -12 16 0 q8 -12 16 0 q-8 3 -16 11 q-8 -8 -16 -11z"/>
+          <path class="bat" d="M64 150 q7 -10 14 0 q7 -10 14 0 q-7 3 -14 9 q-7 -6 -14 -9z"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="verdict" id="verdict">
+      <h2 id="verdict-title"></h2>
+      <p id="verdict-text"></p>
+      <p class="score" id="score" style="margin-top:12px"></p>
+    </div>
+
+    <section class="debrief" aria-labelledby="debrief-h">
+      <h3 id="debrief-h">Your choices, unpacked</h3>
+      <div id="rows" style="display:flex;flex-direction:column;gap:12px"></div>
+      <p class="discuss" id="discuss">Discuss with a partner: which of your three answers would be hardest to defend if your team, your client and your family all read about it tomorrow?</p>
+    </section>
+
+    <div class="actions">
+      <p class="hint">Your response has been recorded. Thank you for participating.</p>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyDgl912qzoQkwh0eYcXpIM4VOJAzKkC-kw",
+  authDomain: "ethical-leadership-survey.firebaseapp.com",
+  projectId: "ethical-leadership-survey",
+  storageBucket: "ethical-leadership-survey.firebasestorage.app",
+  messagingSenderId: "510049671906",
+  appId: "1:510049671906:web:7dc8f4c812d1301e0a5cbb",
+  measurementId: "G-PH52DBLDGB"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+let authReady;
+const userPromise = new Promise((resolve,reject) => {
+  const stop = onAuthStateChanged(auth, user => {
+    if (user) { stop(); resolve(user); }
+    else signInAnonymously(auth).catch(reject);
+  }, reject);
+});
+window.saveLeadershipSurvey = async (answers, ethicalScore) => {
+  const user = await userPromise;
+  const leadershipStyle = ethicalScore >= 2 ? 'Ethical Leader' : 'Evil Leader';
+  await setDoc(doc(db, 'surveyResponses', user.uid), {
+    answers, ethicalScore, leadershipStyle, submittedAt: serverTimestamp()
+  });
+};
+</script>
+
+<script>
+(function () {
+  var SCENARIOS = [
+    {
+      title: "The report that went out wrong",
+      text: "You lead a four-person project team. Two days after sending a report to your biggest client, you discover a calculation error that makes your results look better than they are. Fixing it publicly will embarrass the team and may cost everyone their quarterly bonus.",
+      ask: "What do you do?",
+      options: [
+        { t: "Contact the client today, own the mistake and send a corrected report with a plan to prevent it", e: true },
+        { t: "Quietly fix it in the next report and hope nobody compares the two versions", e: false },
+        { t: "Wait and see whether the client notices before saying anything", e: false },
+        { t: "Tell the client the error came from the junior analyst who built that section", e: false }
+      ],
+      why: "Ethical leaders put honesty and the client's interests ahead of their own image, and take responsibility instead of passing blame down."
+    },
+    {
+      title: "Whose idea was that?",
+      text: "In a meeting, your top salesperson presents an idea as their own. You know it came from a quieter colleague who shared it with you last week. The salesperson brings in the most revenue in your department.",
+      ask: "How do you respond?",
+      options: [
+        { t: "Speak with the salesperson privately, then make sure the colleague is credited publicly", e: true },
+        { t: "Say nothing. Results matter most and you do not want to upset your best performer", e: false },
+        { t: "Let it slide and quietly use the idea in your own presentation to leadership", e: false },
+        { t: "Tell the quiet colleague to speak up next time because that is how the workplace works", e: false }
+      ],
+      why: "Fairness means credit goes to the people who earned it, even when speaking up is uncomfortable and the person at fault is valuable to you."
+    },
+    {
+      title: "The skipped inspection",
+      text: "It is Thursday. Your manager tells you to ship a large order by Friday to hit the monthly target. The only way to make it is to skip a required safety inspection on the equipment. It has never failed before, and missing the target could mean layoffs.",
+      ask: "What is your decision?",
+      options: [
+        { t: "Insist on completing the inspection, explain the risk to your manager and propose a revised delivery date", e: true },
+        { t: "Skip the inspection and tell the team to keep it between themselves", e: false },
+        { t: "Skip it but sign the paperwork as if it was done, since it has never failed before", e: false },
+        { t: "Pass the decision to a junior supervisor so your name is not attached to it", e: false }
+      ],
+      why: "Ethical leaders refuse to trade people's safety for numbers, even under pressure, and they offer an honest alternative instead of just saying no."
+    }
+  ];
+
+  var form = document.getElementById("quiz");
+  var holder = document.getElementById("scenarios");
+  var go = document.getElementById("go");
+  var hint = document.getElementById("hint");
+  var count = document.getElementById("count");
+  var fill = document.getElementById("barfill");
+  var result = document.getElementById("result");
+  var stageGood = document.getElementById("stage-good");
+  var stageBad = document.getElementById("stage-bad");
+  var verdict = document.getElementById("verdict");
+  var title = document.getElementById("verdict-title");
+  var vtext = document.getElementById("verdict-text");
+  var score = document.getElementById("score");
+  var rows = document.getElementById("rows");
+  var selects = [];
+
+  function shuffle(list) {
+    var a = list.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    return n;
+  }
+
+  function build() {
+    holder.innerHTML = "";
+    selects = [];
+    SCENARIOS.forEach(function (s, i) {
+      var box = el("section", "scenario");
+      box.appendChild(el("p", "tag", "Scenario " + (i + 1) + " of " + SCENARIOS.length));
+      box.appendChild(el("h2", "", s.title));
+      box.appendChild(el("p", "", s.text));
+      var label = el("label", "ask", s.ask);
+      label.setAttribute("for", "q" + i);
+      box.appendChild(label);
+      var sel = document.createElement("select");
+      sel.id = "q" + i;
+      sel.required = true;
+      var ph = document.createElement("option");
+      ph.value = ""; ph.textContent = "Choose your response…"; ph.disabled = true; ph.selected = true;
+      sel.appendChild(ph);
+      shuffle(s.options.map(function (o, idx) { return idx; })).forEach(function (idx) {
+        var op = document.createElement("option");
+        op.value = String(idx);
+        op.textContent = s.options[idx].t;
+        sel.appendChild(op);
+      });
+      sel.addEventListener("change", update);
+      box.appendChild(sel);
+      holder.appendChild(box);
+      selects.push(sel);
+    });
+    update();
+  }
+
+  function answered() {
+    return selects.filter(function (s) { return s.value !== ""; }).length;
+  }
+
+  function update() {
+    var n = answered();
+    count.textContent = n + " of " + SCENARIOS.length + " answered";
+    fill.style.width = (n / SCENARIOS.length * 100) + "%";
+    var ready = n === SCENARIOS.length;
+    go.disabled = !ready;
+    hint.hidden = ready;
+  }
+
+  form.addEventListener("submit", async function (ev) {
+    ev.preventDefault();
+    if (answered() !== SCENARIOS.length) return;
+    if (go.disabled) return;
+    go.disabled = true;
+    go.textContent = "Submitting…";
+    var errorBox = document.getElementById("submit-error");
+    errorBox.hidden = true;
+    var answers = selects.map(function (s) { return Number(s.value); });
+    var ethical = answers.reduce(function (n, answer, i) { return n + (SCENARIOS[i].options[answer].e ? 1 : 0); }, 0);
+    try {
+      await window.saveLeadershipSurvey(answers, ethical);
+    } catch (err) {
+      console.error("Survey submission failed:", err);
+      errorBox.textContent = err.code === "permission-denied" || err.code === "already-exists"
+        ? "This anonymous account may already have submitted. Try from a new browser session only if you have not previously participated."
+        : "Your answers could not be saved. Check your internet connection and try again. No result has been recorded.";
+      errorBox.hidden = false;
+      go.disabled = false;
+      go.textContent = "Retry submission";
+      return;
+    }
+    go.textContent = "Reveal my leadership style";
+    rows.innerHTML = "";
+    SCENARIOS.forEach(function (s, i) {
+      var opt = s.options[answers[i]];
+      var row = el("div", "row");
+      row.appendChild(el("p", "q", "Scenario " + (i + 1) + " · " + s.title));
+      row.appendChild(el("p", "a", opt.t));
+      row.appendChild(el("span", "chip " + (opt.e ? "good" : "bad"), opt.e ? "Ethical choice" : "Needs rethinking"));
+      row.appendChild(el("p", "why", opt.e ? s.why : s.why));
+      rows.appendChild(row);
+    });
+    var isGood = ethical >= 2;
+    stageGood.hidden = !isGood;
+    stageBad.hidden = isGood;
+    verdict.className = "verdict " + (isGood ? "good" : "bad");
+    title.textContent = isGood ? "You're an ethical leader." : "You're an evil leader.";
+    vtext.textContent = isGood
+      ? "When honesty, fairness and safety are tested, you choose the right thing even when it costs you something. People follow leaders like that because they trust them."
+      : "When the pressure is on, your choices protect your image or your numbers while other people pay for it. The good news is that leadership is a habit, and you can change yours.";
+    score.textContent = "You chose the ethical response in " + ethical + " of " + SCENARIOS.length + " scenarios.";
+    form.hidden = true;
+    result.hidden = false;
+    window.scrollTo(0, 0);
+  });
+
+
+  build();
+})();
+</script>
+
+</body></html>
